@@ -22,6 +22,9 @@ cte3 equ 52h
 
 inicio
     ; condiciones iniciales
+    movlw 0x80
+    movwf aux
+    ; init aux
     bsf STATUS, 5
     ; PUERTO E COMO ENTRADA XXXXX111
     movlw 0x07
@@ -77,7 +80,7 @@ corrimientoD
     movwf flag
 
 
-    btfss PORTB,0     ; YA ACABO SU CORRIMIENTO
+    btfsc PORTB,0     ; skip if XXX0, YA ACABO SU CORRIMIENTO
     goto changeFlagOn
 
     goto lecturaEntrada
