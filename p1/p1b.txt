@@ -1,0 +1,36 @@
+
+	processor 16f877
+	include <p16f87.inc>
+
+	org 0
+		goto inicio
+	org 5
+
+
+inicio: 
+	movlw 0x24 	; direccion de inicio  banco 0
+	movwf FSR	; direccion inicial de FSR 0x24
+	goto sumVector
+
+sumVector:
+	bcf STATUS,IRP	; pasar al banco 0
+	bcf FSR, 7		; pasar al banco 0
+	movf INDF, 0	; valor de la direccin 0x24 banco 0
+	
+	bcf STATUS,IRP	; pasar al banco 1
+	bsf FSR, 7		; pasar al banco 1
+	addwf INDF,0	;Valor de a4
+
+	bsf STATUS,IRP	; pasar al banco 2
+	bcf FSR, 7		; pasar al banco 2	
+	movwf INDF		; escribir valor de W a 124
+
+	incf FSR		; FSR ++
+	decfsz 0x23
+	goto sumVector
+	goto fin
+
+
+fin:
+	goto fin
+	end
